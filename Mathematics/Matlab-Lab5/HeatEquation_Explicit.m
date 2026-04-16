@@ -1,0 +1,33 @@
+% Heat Equation using Finite Difference Method (Explicit Scheme)
+clear
+clc
+L = 1;
+T = 0.5;
+C = 1;
+N = 10;
+M = 200;
+h = L/N;
+k = T/M;
+lambda = k/(C*h^2);
+x = 0:h:L;
+u = zeros(N+1,M+1);
+% Initial condition
+for i=1:N+1
+ u(i,1) = sin(pi*x(i));
+end
+% Boundary conditions
+u(1,:) = 0;
+u(N+1,:) = 0;
+% Finite difference iteration
+for j=1:M
+    for i=2:N
+        u(i,j+1) = (1-2*lambda)*u(i,j) + ...
+            lambda*(u(i-1,j) + u(i+1,j));
+    end
+end
+
+surf(u)
+xlabel('Time step')
+ylabel('Space node')
+zlabel('Temperature')
+title('Heat Equation Solution')
